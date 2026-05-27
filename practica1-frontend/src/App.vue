@@ -1,21 +1,23 @@
-<script setup lang="ts"></script>
-
 <template>
-  <main class="contenedor">
-    <h1>Mi Catálogo</h1>
-    <ProductosList />
-  </main>
+  <div class="app-container">
+    <RouterView />
+  </div>
 </template>
 
 <script setup>
-import ProductosList from './components/ProductosList.vue'
+import { RouterView } from 'vue-router'
 </script>
 
 <style>
-.contenedor {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: Arial, sans-serif;
+/* Estilos globales básicos */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f9;
+  color: #333;
+}
+.app-container {
+  min-height: 100vh;
 }
 </style>
