@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -10,10 +11,7 @@ Route::post('/login', [AuthController::class, 'login']);
 // RUTAS PROTEGIDAS (Solo entran los que tengan Token válido)
 Route::middleware('auth:sanctum')->group(function () {
     
-    // Ruta para leer los productos (GET)
-    Route::get('/productos', [ProductoController::class, 'index']);
-    
-    // NUEVA: Ruta para crear productos (POST) - ¡Ya activada!
-    Route::post('/productos', [ProductoController::class, 'store']);
+    // Esto activa automáticamente: GET, POST, PUT, DELETE para /productos
+    Route::apiResource('productos', ProductoController::class);
     
 });
