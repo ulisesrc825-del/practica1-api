@@ -9,8 +9,13 @@
       <nav class="sidebar-menu">
         <router-link to="/admin" exact-active-class="active-link">📊 Inicio Dashboard</router-link>
         <router-link to="/admin/productos" active-class="active-link">📦 Gestionar Productos</router-link>
+        
         <hr class="menu-divider" />
-        <router-link to="/" class="public-link">🏠 Ir a Tienda Pública</router-link>
+        
+        <div class="tienda-link-container">
+          <router-link to="/" class="public-link">🏠 Ir a Tienda Pública</router-link>
+          <CartIcon />
+        </div>
       </nav>
 
       <div class="sidebar-footer">
@@ -27,6 +32,8 @@
 <script setup>
 import { useAuthStore } from '../stores/auth'
 import { useRouter } from 'vue-router'
+// PASO EXTRA — Importar el componente del icono del carrito
+import CartIcon from '../components/CartIcon.vue'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -96,7 +103,27 @@ const cerrarSesion = () => {
 .public-link {
   font-size: 0.9rem;
   color: #a7f3d0 !important;
+  padding: 0 !important; /* Reseteamos padding interno para alineación fina */
 }
+.public-link:hover {
+  background-color: transparent !important;
+  color: #6ee7b7 !important;
+}
+
+/* NUEVO ESTILO: Contenedor flex horizontal para alinear link + icono del carrito */
+.tienda-link-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background-color: rgba(16, 185, 129, 0.1); /* Fondo verde traslúcido elegante */
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+.tienda-link-container:hover {
+  background-color: rgba(16, 185, 129, 0.2);
+}
+
 .btn-logout {
   width: 100%;
   background-color: #ef4444;

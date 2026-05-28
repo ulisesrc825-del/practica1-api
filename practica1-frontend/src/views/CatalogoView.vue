@@ -22,7 +22,7 @@
             <th>Descripción</th>
             <th>Precio</th>
             <th>Stock</th>
-          </tr>
+            <th>Acciones</th> </tr>
         </thead>
         <tbody>
           <tr v-for="producto in productosFiltrados" :key="producto.id">
@@ -35,9 +35,23 @@
                 {{ producto.stock }} unidades
               </span>
             </td>
+            <td>
+              <button 
+                @click="carrito.agregar(producto)" 
+                :disabled="producto.stock <= 0"
+                :class="['btn-carrito', carrito.cantidadDeProducto(producto.id) > 0 ? 'activo' : '']"
+              >
+                <template v-if="carrito.cantidadDeProducto(producto.id) > 0">
+                  En carrito ({{ carrito.cantidadDeProducto(producto.id) }})
+                </template>
+                <template v-else>
+                  {{ producto.stock > 0 ? 'Agregar al carrito' : 'Agotado' }}
+                </template>
+              </button>
+            </td>
           </tr>
           <tr v-if="productosFiltrados.length === 0">
-            <td colspan="5" class="no-data">No se encontraron productos coincidentes.</td>
+            <td colspan="6" class="no-data">No se encontraron productos coincidentes.</td>
           </tr>
         </tbody>
       </table>
@@ -48,6 +62,11 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
+// PASO 1 — Importar el Store del Carrito de Pinia (Punto 4.5)
+import { useCarritoStore } from '../stores/carrito'
+
+// Instanciar el store global
+const carrito = useCarritoStore()
 
 const productos = ref([])
 const busqueda = ref('')
@@ -139,6 +158,7 @@ onMounted(() => {
   padding: 1rem;
   border-bottom: 1px solid #e2e8f0;
   color: #334155;
+  vertical-align: middle;
 }
 
 .bold {
@@ -166,6 +186,39 @@ onMounted(() => {
 .outstock {
   background-color: #fee2e2;
   color: #b91c1c;
+}
+
+/* NUEVOS ESTILOS PARA EL BOTÓN DEL CARRITO */
+.btn-carrito {
+  padding: 0.5rem 1rem;
+  background-color: #10b981; /* Verde esmeralda por defecto */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+}
+
+.btn-carrito:hover:not(:disabled) {
+  background-color: #059669;
+  transform: translateY(-1px);
+}
+
+/* Clase dinámica azul si el producto ya está en el carrito */
+.btn-carrito.activo {
+  background-color: #3b82f6;
+}
+
+.btn-carrito.activo:hover:not(:disabled) {
+  background-color: #2563eb;
+}
+
+.btn-carrito:disabled {
+  background-color: #cbd5e1;
+  color: #94a3b8;
+  cursor: not-allowed;
 }
 
 .loading, .no-data {
